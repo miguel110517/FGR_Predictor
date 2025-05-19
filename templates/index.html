@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario FGR</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Predicción de FGR</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+    
+    <div class="card p-4 mb-4 shadow-sm">
+      <form method="POST" action="/predict_manual">
+        <div class="mb-3">
+          <label for="modelo" class="form-label">Selecciona modelo:</label>
+          <select class="form-select" name="modelo" id="modelo" required>
+            <option>Regresión Logística</option>
+            <option>Red Neuronal</option>
+            <option>SVM</option>
+            <option>Mapa Cognitivo Difuso</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <!-- Columna izquierda -->
+          <div class="col-md-6">
+            <label class="form-label">Edad:</label>
+            <input type="number" name="C1" class="form-control" required>
+
+            <label class="form-label mt-2">IMC:</label>
+            <input type="number" name="C2" class="form-control" required>
+
+            <label class="form-label mt-2">Edad gestacional al parto:</label>
+            <input type="number" name="C3" class="form-control" required>
+
+            <label class="form-label mt-2">Gravidez:</label>
+            <input type="number" name="C4" class="form-control" required>
+
+            <label class="form-label mt-2">Paridad:</label>
+            <input type="number" name="C5" class="form-control" required>
+
+            <label class="form-label mt-2">Síntomas iniciales:</label>
+            <select name="C6" class="form-select" required>
+              <option value="0">Edema</option>
+              <option value="1">Hipertensión</option>
+              <option value="2">FGR</option>
+            </select>
+
+            <label class="form-label mt-2">Edad gestacional del inicio de síntomas:</label>
+            <input type="number" name="C7" class="form-control" required>
+
+            <label class="form-label mt-2">Días desde síntomas hasta parto:</label>
+            <input type="number" name="C8" class="form-control" required>
+
+            <label class="form-label mt-2">Edad gestacional del inicio de hipertensión:</label>
+            <input type="number" name="C9" class="form-control" required>
+
+            <label class="form-label mt-2">Días desde hipertensión hasta parto:</label>
+            <input type="number" name="C10" class="form-control" required>
+
+            <label class="form-label mt-2">Edad gestacional del inicio de edema:</label>
+            <input type="number" name="C11" class="form-control" required>
+
+            <label class="form-label mt-2">Días desde edema hasta parto:</label>
+            <input type="number" name="C12" class="form-control" required>
+
+            <label class="form-label mt-2">Edad gestacional del inicio de proteinuria:</label>
+            <input type="number" name="C13" class="form-control" required>
+
+            <label class="form-label mt-2">Días desde proteinuria hasta parto:</label>
+            <input type="number" name="C14" class="form-control" required>
+
+            <label class="form-label mt-2">Tratamiento expectante:</label>
+            <select name="C15" class="form-select" required>
+              <option value="0">No</option>
+              <option value="1">Sí</option>
+            </select>
+
+            <label class="form-label mt-2">Antihipertensivos antes de hospitalización:</label>
+            <select name="C16" class="form-select" required>
+              <option value="0">No</option>
+              <option value="1">Sí</option>
+            </select>
+
+            <label class="form-label mt-2">Antecedentes:</label>
+            <select name="C17" class="form-select" required>
+              <option value="0">Ninguno</option>
+              <option value="1">Hipertensión</option>
+              <option value="2">PCOS</option>
+            </select>
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="col-md-6">
+            <label class="form-label">Presión sistólica máxima:</label>
+            <input type="number" name="C18" class="form-control" required>
+
+            <label class="form-label mt-2">Presión diastólica máxima:</label>
+            <input type="number" name="C19" class="form-control" required>
+
+            <label class="form-label mt-2">Razón del parto:</label>
+            <select name="C20" class="form-select" required>
+              <option value="0">HELLP</option>
+              <option value="1">Sufrimiento fetal</option>
+              <option value="2">Disfunción orgánica</option>
+              <option value="3">Hipertensión no controlada</option>
+              <option value="4">Edema</option>
+              <option value="5">FGR</option>
+            </select>
+
+            <label class="form-label mt-2">Modo de parto:</label>
+            <select name="C21" class="form-select" required>
+              <option value="0">Cesárea</option>
+              <option value="1">Parto vaginal</option>
+            </select>
+
+            <label class="form-label mt-2">BNP máximo:</label>
+            <input type="number" name="C22" class="form-control" required>
+
+            <label class="form-label mt-2">Creatinina máxima:</label>
+            <input type="number" name="C23" class="form-control" required>
+
+            <label class="form-label mt-2">Ácido úrico máximo:</label>
+            <input type="number" name="C24" class="form-control" required>
+
+            <label class="form-label mt-2">Proteinuria máxima:</label>
+            <input type="number" name="C25" class="form-control" required>
+
+            <label class="form-label mt-2">Proteína total máxima:</label>
+            <input type="number" name="C26" class="form-control" required>
+
+            <label class="form-label mt-2">Albúmina máxima:</label>
+            <input type="number" name="C27" class="form-control" required>
+
+            <label class="form-label mt-2">ALT máxima:</label>
+            <input type="number" name="C28" class="form-control" required>
+
+            <label class="form-label mt-2">AST máxima:</label>
+            <input type="number" name="C29" class="form-control" required>
+
+            <label class="form-label mt-2">Plaquetas máximas:</label>
+            <input type="number" name="C30" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <button type="submit" class="btn btn-primary btn-lg">Predecir</button>
+        </div>
+      </form>
+    </div>
+
+  
+    <div class="card p-4 shadow-sm">
+      <h4>Predicción por archivo Excel</h4>
+      <form method="POST" action="/predict_batch" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Selecciona modelo:</label>
+          <select class="form-select" name="modelo" required>
+            <option>Regresión Logística</option>
+            <option>Red Neuronal</option>
+            <option>SVM</option>
+            <option>Mapa Cognitivo Difuso</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Archivo (.xlsx):</label>
+          <input type="file" name="archivo" class="form-control" accept=".xlsx" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success">Subir y predecir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
